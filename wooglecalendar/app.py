@@ -14,5 +14,8 @@ def calendar():
 def schedule(schedule_id):
     return "Schedule no. {}".format(schedule_id)
 
-if __name__ == "__main__":
+def main():
     app.run()
+
+if __name__ == "__main__":
+    main()
