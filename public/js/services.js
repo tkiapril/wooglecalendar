@@ -27,7 +27,7 @@ angular.module('woogleApp.services', ['ngCookies'])
 .factory('ScheduleService', function ($http) {
 
   var schedules = [];
-  var addSchedule = function (title, start, end, allDay, location, description) {
+  var addSchedule = function (title, start, end, allDay, location, description, comments) {
     schedules.push({
       scheduleId: schedules.length + 1,
       title: title,
@@ -36,7 +36,7 @@ angular.module('woogleApp.services', ['ngCookies'])
       allDay: allDay,
       location: location || (title + '장소'),
       description: description || (title + '설명'),
-      comments: [
+      comments: comments || [
         {
           author: '가나다',
           comment: '라마바'
@@ -49,12 +49,38 @@ angular.module('woogleApp.services', ['ngCookies'])
     });
   };
 
+  addSchedule('네트워킹 데이', moment('2014-08-22 08:00:00'), moment('2014-08-22 21:00:00'), false, '소프트웨어 마에스트로 연수 센터', '네트워킹 데이입니다', [
+    {
+      author: '네트워킹 데이 참여자 1',
+      comment: '재미있겠다!'
+    },
+    {
+      author: '네트워킹 데이 참여자 2',
+      comment: '그렇지요!'
+    }
+  ]);
+
+  addSchedule('광복절', moment('2014-08-15 00:00:00'), moment('2014-08-15 23:59:59'), true, '해당 없음', '광복절입니다.', []);
+
+  addSchedule('Google Cloud를 이용한 서비스 개발', moment('2014-08-06 13:00:00'), moment('2014-08-06 15:00:00'), false, '해찬', 'python 언어기초<br />Google App Engine(GAE)을 통한 PaaS 이해 <br />GAE의 memcache 기능 <br />GAE의 sql 기능 <br />GAE의 nosql(ndb)기능, 테이블 설계 <br />ndb query 및 filter <br />GAE의 template 기능 <br />GAE의 taskqueue <br />GAE의 cron광복절입니다.', [
+    {
+      author: '연수생 1',
+      comment: 'Google Cloud를 이용한 서비스 개발 최고!'
+    },
+    {
+      author: '연수생 2',
+      comment: '이 교육은 안 들을래요.'
+    }
+  ]);
+ 
+  /*
   addSchedule('Schedule 8/20-1', moment('2014-08-20'), moment('2014-08-21'), true);
   addSchedule('Schedule 8/20-2', moment('2014-08-20'), moment('2014-08-20'), true);
   addSchedule('Schedule 8/22-1', moment('2014-08-22'), moment('2014-08-22'), false);
   addSchedule('Schedule 8/22-2', moment('2014-08-22'), moment('2014-08-22'), true);
   addSchedule('Schedule 8/22-3', moment('2014-08-22'), moment('2014-08-22'), true);
   addSchedule('Schedule 8/23-1', moment('2014-08-23'), moment('2014-08-23'), true);
+  */
 
   var debug = true;
 

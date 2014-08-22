@@ -6,8 +6,8 @@
   table.table.table-bordered
     thead
       tr
-        th 항목
-        th 내용
+        th.col-md-2 항목
+        th.col-md-10 내용
     tbody
       tr
         td 시작
@@ -20,10 +20,10 @@
         td {{ event.allDay ? '예' : '아니오' }}
       tr
         td 장소
-        td {{ event.location }}
+        td {{ event.location | trustAsHtml }}
       tr
         td 설명
-        td {{ event.description }}
+        td(ng-bind-html='event.description | trustAsHtml')
   h2 댓글
   table.table.table-bordered
     thead
