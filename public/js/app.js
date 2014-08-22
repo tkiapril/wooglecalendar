@@ -6,7 +6,8 @@ angular.module('woogleApp',
     'woogleApp.filters',
     'ui.router',
     'ngRoute',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'ui.calendar'
   ]
 )
 
