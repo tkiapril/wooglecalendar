@@ -2,18 +2,14 @@
   text-align: center;
   margin-top: 64px;
 }
-/*
-.root>h1
-  position: relative
-  display inline-block
-  overflow hidden
-  margin 0 0 60px 0
-  padding 70px 0 0 0
-  width 430px
-  height 0
-  background url(../img/woogle-web-logo-splash.png) no-repeat
-  background-size 430px 70px
-  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)
-    background url(../img/woogle-web-logo-splash@2x.png) no-repeat
-    background-size 430px 70px
-*/
+.root>h1 {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  margin: 0 0 60px 0;
+  padding: 70px 0 0 0;
+  width: 434px;
+  height: 0;
+  background: url("../img/woogle-web-logo-splash.png") no-repeat;
+  background-size: 434px 70px;
+}
