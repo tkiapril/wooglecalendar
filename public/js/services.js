@@ -135,6 +135,7 @@ angular.module('woogleApp.services', ['ngCookies'])
       body.start_date = sumDateTime(body.startDate, body.startTime);
       body.end_date = sumDateTime(body.endDate, body.endTime);
       if (debug) {
+        body.title = body.title || '제목 없음';
         addSchedule(body.title, body.start_date, body.end_date, true, body.location, body.description);
         cb(null);
         return;
