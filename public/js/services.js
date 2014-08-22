@@ -46,6 +46,20 @@ angular.module('woogleApp.services', ['ngCookies'])
   addSchedule('Schedule 8/22-3', moment('2014-08-22'), moment('2014-08-22'), true);
   addSchedule('Schedule 8/23-1', moment('2014-08-23'), moment('2014-08-23'), true);
 
+  var convertSchedule = function (schedule) {
+    schedule.scheduleId = schedule.schedule_id;
+    schedule.start = schedule.start_date;
+    schedule.end = schedule.end_date;
+    schedule.allDay = schedule.allday;
+    return schedule;
+  };
+
+  var convertSchedules = function (schedules) {
+    for (var i = 0; i < schedules.length; i++) {
+      schedules[i] = convertSchedule(schedules[i]);
+    }
+  };
+
   return {
     readAll: function (cb) {
       $http.get('/schedule')
