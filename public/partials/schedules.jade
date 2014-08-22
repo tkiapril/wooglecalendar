@@ -8,6 +8,8 @@
       .row
         .col-sm-12
           button.btn.btn-primary(ng-click='clickNew()') 추가
+      .row
+        p &nbsp;
       p(ng-show='!(events | selectByDate:selectedDate).length')
         | 일정이 없습니다.
       p.bg-info.event-day(ng-repeat='dayEvent in events | selectByDate:selectedDate', ng-click='clickDayEvent(dayEvent)')

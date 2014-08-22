@@ -77,11 +77,22 @@ angular.module('woogleApp.controllers', [])
   updateAll();
 })
 
-.controller('ViewEventController', function ($scope, $modalInstance, event) {
+.controller('ViewEventController', function ($scope, $modalInstance, event, ScheduleService) {
   $scope.result = true;
   $scope.event = event;
+  var updateComment = function () {
+      ScheduleService.readById(event.scheduleId, function (schedule) {
+        $scope.comments = schedule.comments;
+      });
+  };
+  updateComment();
   $scope.close = function () {
     $modalInstance.close($scope.result);
+  };
+  $scope.postComment = function () {
+    ScheduleService.post(event.scheduleId ,$('#inputComment').val(), function () {
+      updateComment();
+    });
   };
 })
 
@@ -93,7 +104,7 @@ angular.module('woogleApp.controllers', [])
   $scope.dt.endDate = new Date();
   $scope.dt.endTime = new Date();
 
-  $scope.close = function () {
+  $scope.cancel = function () {
     $modalInstance.close(false);
   };
 

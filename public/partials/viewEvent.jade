@@ -31,11 +31,14 @@
         th 사용자
         th 내용
     tbody
-      tr
-        td 가짜 사용자
-        td 가짜 내용
-      tr
-        td 가짜 사용자
-        td 가짜 내용
+      tr(ng-repeat='comment in comments')
+        td {{ comment.author }}
+        td {{ comment.comment }}
+  .form-horizontal(role='form')
+    .form-group
+      .col-sm-10
+        input#inputComment.form-control(type='text', placeholder='댓글 내용')
+      .col-sm-2
+        button.btn.btn-primary(ng-click='postComment()') 작성
 .modal-footer
   button.btn.btn-primary(ng-click='close()') 닫기
