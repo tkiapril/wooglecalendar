@@ -6,9 +6,13 @@
 from flask import Flask
 app = Flask(__name__)
 
-@app.route("/")
+@app.route('/')
 def calendar():
     return "Hello World!"
+
+@app.route('/schedule/<int:schedule_id>')
+def schedule(schedule_id):
+    return "Schedule no. {}".format(schedule_id)
 
 if __name__ == "__main__":
     app.run()
