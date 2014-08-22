@@ -73,8 +73,8 @@ class BaseAlembicCommand(distutils.core.Command):
 
     def run(self):
         try:
-            from cliche.cli import get_database_engine, initialize_app
-            from cliche.orm import Base, get_alembic_config, import_all_modules
+            from wooglecalendar.cli import get_database_engine, initialize_app
+            from wooglecalendar.orm import Base, get_alembic_config, import_all_modules
             import_all_modules()
         except ImportError as e:
             raise ImportError('dependencies are not resolved yet; run '
