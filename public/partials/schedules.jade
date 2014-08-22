@@ -2,5 +2,13 @@
   .page-header
     h1 일정
   .row
-    div.col-sm-12.calendar(ui-calendar='uiConfig.calendar', ng-model='eventSources')
- 
+    .col-sm-9.calendar(ui-calendar='calendarConfig', ng-model='events', calendar='mainCalendar')
+    .col-sm-3
+      h3 {{ selectedDate | dateLocal }}
+      .row
+        .col-sm-12
+          button.btn.btn-primary(ng-click='clickNew()') 추가
+      p(ng-show='!(events | selectByDate:selectedDate).length')
+        | 일정이 없습니다.
+      p.bg-info.event-day(ng-repeat='dayEvent in events | selectByDate:selectedDate', ng-click='clickDayEvent(dayEvent)')
+        {{ dayEvent.title }}

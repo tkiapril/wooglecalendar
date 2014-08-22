@@ -1,0 +1,41 @@
+.modal-header
+  h3.modal-title
+    {{ event.title }}
+.modal-body
+  h2 일정 정보
+  table.table.table-bordered
+    thead
+      tr
+        th 항목
+        th 내용
+    tbody
+      tr
+        td 시작
+        td {{ event.start | dateTimeLocal }}
+      tr
+        td 종료
+        td {{ event.end | dateTimeLocal }}
+      tr
+        td 종일
+        td {{ event.allDay ? '예' : '아니오' }}
+      tr
+        td 장소
+        td {{ event.location }}
+      tr
+        td 설명
+        td {{ event.description }}
+  h2 댓글
+  table.table.table-bordered
+    thead
+      tr
+        th 사용자
+        th 내용
+    tbody
+      tr
+        td 가짜 사용자
+        td 가짜 내용
+      tr
+        td 가짜 사용자
+        td 가짜 내용
+.modal-footer
+  button.btn.btn-primary(ng-click='close()') 닫기

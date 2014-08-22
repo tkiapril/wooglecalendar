@@ -1,0 +1,44 @@
+.modal-header
+  h3.modal-title
+    | 새 일정 등록하기
+.modal-body
+  .form-horizontal(role='form')
+    .form-group
+      label.col-sm-2.control-label(for='inputTitle') 제목
+      .col-sm-10
+        input#inputTitle.form-control(type='text', placeholder='제목')
+
+    .form-group
+      label.col-sm-2.control-label(for='inputStartDate') 시작 날짜
+      .col-sm-10
+        datepicker#inputStartDate(ng-model='dt.startDate', ng-required='true', show-weeks='false', format-day-title='yyyy년 MMMM', max-mode='day')
+    .form-group
+      label.col-sm-2.control-label(for='inputStartTime') 시작 시각
+      .col-sm-10
+        timepicker#inputStartTime(ng-model='dt.startTime')
+
+    .form-group
+      label.col-sm-2.control-label(for='inputEndDate') 종료 날짜
+      .col-sm-10
+        datepicker#inputEndDate(ng-model='dt.endDate', ng-required='true', show-weeks='false', format-day-title='yyyy년 MMMM', max-mode='day')
+    .form-group
+      label.col-sm-2.control-label(for='inputEndTime') 종료 시각
+      .col-sm-10
+        timepicker#inputEndTime(ng-model='dt.endTime')
+
+    .form-group
+      label.col-sm-2.control-label(for='inputAllDay') 종일
+      .col-sm-10
+        input#inputAllDay.form-control(type='checkbox', placeholder='종일', ng-model='allDay')
+    .form-group
+      label.col-sm-2.control-label(for='inputLocation') 장소
+      .col-sm-10
+        input#inputLocation.form-control(type='text', placeholder='장소')
+    .form-group
+      label.col-sm-2.control-label(for='inputDescription') 설명
+      .col-sm-10
+        input#inputDescription.form-control(type='text', placeholder='설명')
+
+.modal-footer
+  button.btn.btn-default(ng-click='cancel()') 취소
+  button.btn.btn-default(ng-click='ok()') 등록

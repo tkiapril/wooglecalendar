@@ -3,135 +3,127 @@ angular.module('woogleApp.controllers', [])
 .controller('HomeController', function ($scope, $state) {
 })
 
-.controller('SchedulesController', function ($scope, ScheduleService) {
-  $scope.uiConfig = {
-    calendar: {
-      height: 450,
-      editable: false,
-      header: {
-        left: 'title',
-        center: '',
-        right: 'today prev, next'
-      },
-      lang: 'ko',
-      monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-      monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-      dayNames: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-      dayNamesShort: ['일', '월', '화', '수', '목', '금', '토']
-    }
+.controller('SchedulesController', function ($scope, ScheduleService, $modal) {
+
+  $scope.selectedDate = moment();
+  var updateSelectedDate = function (date) {
+    $scope.selectedDate = moment(date);
+    $scope.$digest();
   };
-  return;
 
-  var date = new Date();
-    var d = date.getDate();
-    var m = date.getMonth();
-    var y = date.getFullYear();
-    
-    $scope.changeTo = 'Hungarian';
-    /* event source that pulls from google.com */
-    $scope.eventSource = {
-            url: "http://www.google.com/calendar/feeds/usa__en%40holiday.calendar.google.com/public/basic",
-            className: 'gcal-event',           // an option!
-            currentTimezone: 'America/Chicago' // an option!
-    };
-    /* event source that contains custom events on the scope */
-    $scope.events = [
-      {title: 'All Day Event',start: new Date(y, m, 1)},
-      {title: 'Long Event',start: new Date(y, m, d - 5),end: new Date(y, m, d - 2)},
-      {id: 999,title: 'Repeating Event',start: new Date(y, m, d - 3, 16, 0),allDay: false},
-      {id: 999,title: 'Repeating Event',start: new Date(y, m, d + 4, 16, 0),allDay: false},
-      {title: 'Birthday Party',start: new Date(y, m, d + 1, 19, 0),end: new Date(y, m, d + 1, 22, 30),allDay: false},
-      {title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/'}
-    ];
-    /* event source that calls a function on every view switch */
-    $scope.eventsF = function (start, end, callback) {
-      var s = new Date(start).getTime() / 1000;
-      var e = new Date(end).getTime() / 1000;
-      var m = new Date(start).getMonth();
-      var events = [{title: 'Feed Me ' + m,start: s + (50000),end: s + (100000),allDay: false, className: ['customFeed']}];
-      callback(events);
-    };
+  var dayClick = function (date, jsEvent, view) {
+    updateSelectedDate(date);
+  };
 
-    $scope.calEventsExt = {
-       color: '#f00',
-       textColor: 'yellow',
-       events: [ 
-          {type:'party',title: 'Lunch',start: new Date(y, m, d, 12, 0),end: new Date(y, m, d, 14, 0),allDay: false},
-          {type:'party',title: 'Lunch 2',start: new Date(y, m, d, 12, 0),end: new Date(y, m, d, 14, 0),allDay: false},
-          {type:'party',title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/'}
-        ]
-    };
-    /* alert on eventClick */
-    $scope.alertOnEventClick = function( event, allDay, jsEvent, view ){
-        $scope.alertMessage = (event.title + ' was clicked ');
-    };
-    /* alert on Drop */
-     $scope.alertOnDrop = function(event, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view){
-       $scope.alertMessage = ('Event Droped to make dayDelta ' + dayDelta);
-    };
-    /* alert on Resize */
-    $scope.alertOnResize = function(event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view ){
-       $scope.alertMessage = ('Event Resized to make dayDelta ' + minuteDelta);
-    };
-    /* add and removes an event source of choice */
-    $scope.addRemoveEventSource = function(sources,source) {
-      var canAdd = 0;
-      angular.forEach(sources,function(value, key){
-        if(sources[key] === source){
-          sources.splice(key,1);
-          canAdd = 1;
-        }
-      });
-      if(canAdd === 0){
-        sources.push(source);
-      }
-    };
-    /* add custom event*/
-    $scope.addEvent = function() {
-      $scope.events.push({
-        title: 'Open Sesame',
-        start: new Date(y, m, 28),
-        end: new Date(y, m, 29),
-        className: ['openSesame']
-      });
-    };
-    /* remove event */
-    $scope.remove = function(index) {
-      $scope.events.splice(index,1);
-    };
-    /* Change View */
-    $scope.changeView = function(view,calendar) {
-      calendar.fullCalendar('changeView',view);
-    };
-    /* Change View */
-    $scope.renderCalender = function(calendar) {
-      calendar.fullCalendar('render');
-    };
-    /* config object */
-    $scope.uiConfig = {
-      calendar:{
-        height: 450,
-        editable: true,
-        header:{
-          left: 'title',
-          center: '',
-          right: 'today prev,next'
+  var eventClick = function (event, jsEvent, view) {
+    updateSelectedDate(event.start);
+  };
+
+  $scope.events = [];
+  $scope.calendarConfig = {
+    height: 550,
+    editable: false,
+    header: {
+      left: 'title',
+      center: '',
+      right: 'today prev, next'
+    },
+    lang: 'ko',
+    monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+    monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+    dayNames: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
+    dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+    dayClick: dayClick,
+    eventClick: eventClick
+  };
+
+  var updateAll = function () {
+    ScheduleService.readAll(function (events) {
+      $scope.events = [events];
+    });
+  };
+
+  $scope.clickDayEvent = function (event) {
+    var modalInstance = $modal.open({
+      templateUrl: 'partials/viewEvent.html',
+      controller: 'ViewEventController',
+      size: 'lg',
+      resolve: {
+        event: function () {
+          return event;
         }
       }
-    };
-
-    $scope.changeLang = function() {
-      if($scope.changeTo === 'Hungarian'){
-        $scope.uiConfig.calendar.dayNames = ["Vasárnap", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat"];
-        $scope.uiConfig.calendar.dayNamesShort = ["Vas", "Hét", "Kedd", "Sze", "Csüt", "Pén", "Szo"];
-        $scope.changeTo= 'English';
-      } else {
-        $scope.uiConfig.calendar.dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        $scope.uiConfig.calendar.dayNamesShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-        $scope.changeTo = 'Hungarian';
+    });
+    modalInstance.result.then(function (result) {
+      if (result) {
+        updateAll();
       }
-    };
-    /* event sources array*/
-    $scope.eventSources = [$scope.events, $scope.eventSource, $scope.eventsF];
-    $scope.eventSources2 = [$scope.calEventsExt, $scope.eventsF, $scope.events];
+    }, function () {});
+  };
+
+  $scope.clickNew = function () {
+    var modalInstance = $modal.open({
+      templateUrl: 'partials/newEvent.html',
+      controller: 'NewEventController',
+      size: 'lg'
+    });
+    modalInstance.result.then(function (result) {
+      if (result) {
+        updateAll();
+      }
+    }, function () {});
+  };
+
+  updateAll();
 })
+
+.controller('ViewEventController', function ($scope, $modalInstance, event) {
+  $scope.result = true;
+  $scope.event = event;
+  $scope.close = function () {
+    $modalInstance.close($scope.result);
+  };
+})
+
+.controller('NewEventController', function ($scope, $modalInstance, ScheduleService) {
+  
+  $scope.dt = {};
+  $scope.dt.startDate = new Date();
+  $scope.dt.startTime = new Date();
+  $scope.dt.endDate = new Date();
+  $scope.dt.endTime = new Date();
+
+  $scope.close = function () {
+    $modalInstance.close(false);
+  };
+
+  $scope.ok = function () {
+
+    var title = $('#inputTitle').val();
+    var startDate = $scope.dt.startDate;
+    var startTime = $scope.dt.startTime;
+    var endDate = $scope.dt.endDate;
+    var endTime = $scope.dt.endTime;
+    var allDay = !!$scope.allDay;
+    var location = $('#inputLocation').val();
+    var description = $('#inputDescription').val();
+
+    ScheduleService.create({
+      title: title,
+      startDate: startDate,
+      startTime: startTime,
+      endDate: endDate,
+      endTime: endTime,
+      allDay: allDay,
+      location: location,
+      description: description
+    }, function (err, result) {
+      if (err) {
+        alert('일정을 등록하는 도중 오류가 발생했습니다.');
+        return $modalInstance.close(false);
+      }
+      $modalInstance.close(true);
+    });
+  };
+})
+

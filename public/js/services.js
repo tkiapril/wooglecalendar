@@ -25,4 +25,57 @@ angular.module('woogleApp.services', ['ngCookies'])
 })
 
 .factory('ScheduleService', function ($http) {
+
+  var schedules = [];
+  var addSchedule = function (title, start, end, allDay) {
+    schedules.push({
+      scheduleId: schedules.length + 1,
+      title: title,
+      start: start,
+      end: end,
+      allDay: allDay,
+      location: title + '장소',
+      description: title + '설명'
+    });
+  };
+
+  addSchedule('Schedule 8/20-1', moment('2014-08-20'), moment('2014-08-21'), true);
+  addSchedule('Schedule 8/20-2', moment('2014-08-20'), moment('2014-08-20'), true);
+  addSchedule('Schedule 8/22-1', moment('2014-08-22'), moment('2014-08-22'), false);
+  addSchedule('Schedule 8/22-2', moment('2014-08-22'), moment('2014-08-22'), true);
+  addSchedule('Schedule 8/22-3', moment('2014-08-22'), moment('2014-08-22'), true);
+  addSchedule('Schedule 8/23-1', moment('2014-08-23'), moment('2014-08-23'), true);
+
+  return {
+    readAll: function (cb) {
+      $http.get('/schedule')
+      .success(function (data) {
+        cb(data);
+      });
+    },
+    readByDate: function (year, month, date) {
+      $http.get('/schedule')
+      .success(function (data) {
+        _.filter(data, function (schedule) {
+          return schedule.getFullYear() == year && schedules.getMonth() == month && schedules.getDate() == date;
+        });
+      })
+    },
+    readById: function (scheduleId, cb) {
+      $http.get('/schedule/' + scheduleId)
+      .success(function (data) {
+        cb(data);
+      });
+    },
+    create: function (body, cb) {
+      console.log(body);
+      $http.post('/schedules', body)
+      .success(function () {
+        cb(null);
+      })
+      .error(function () {
+        cb(true);
+      });
+    }
+  };
 })

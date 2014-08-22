@@ -28,3 +28,14 @@ angular.module('woogleApp.filters', [])
         return $sce.trustAsUrl(val);
     };
 })
+.filter('selectByDate', function () {
+  return function (events, date) {
+    if (!date) {
+      return [];
+    }
+    return _.filter(events[0], function (event) {
+      var eventDate = event.start;
+      return eventDate.year() == date.year() && eventDate.month() == date.month() && eventDate.date() == date.date();
+    });
+  };
+})
