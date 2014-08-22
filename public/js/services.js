@@ -64,12 +64,14 @@ angular.module('woogleApp.services', ['ngCookies'])
     readAll: function (cb) {
       $http.get('/schedule')
       .success(function (data) {
+        convertSchedules(data);
         cb(data);
       });
     },
     readByDate: function (year, month, date) {
       $http.get('/schedule')
       .success(function (data) {
+        convertSchedules(data);
         _.filter(data, function (schedule) {
           return schedule.getFullYear() == year && schedules.getMonth() == month && schedules.getDate() == date;
         });
